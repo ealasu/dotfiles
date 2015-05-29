@@ -1,35 +1,45 @@
-'global':
-  'editor':
-    'showIndentGuide': true
-    'fontFamily': 'Menlo'
-    'fontSize': 15
-    'invisibles': {}
-  'core':
-    'ignoredNames': [
-      '.bundle'
-      '.git'
-      'log'
-      'repositories'
-      'tmp'
-      'vendor'
+"*":
+  editor:
+    fontFamily: "Source Code Pro"
+    fontSize: 12
+    invisibles:
+      {}
+    preferredLineLength: 999
+    softWrap: true
+  core:
+    disabledPackages: [
+      "color-picker"
+      "minimap"
+      "neon-cursor"
+      "autocomplete-jedi"
     ]
-    'themes': [
-      'unity-ui'
-      'glacier-syntax'
+    themes: [
+      "one-light-ui"
+      "one-light-syntax"
     ]
-    'hideGitIgnoredFiles': true
-    'disabledPackages': [
-      'background-tips'
-      'exception-reporting'
-      'metrics'
-    ]
-  'spell-check':
-    'grammars': [
-      'text.plain'
-      'source.gfm'
-      'text.git-commit'
-    ]
-  'welcome':
-    'showOnStartup': false
-  'release-notes':
-    'viewedVersion': '0.89.0'
+  "release-notes":
+    viewedVersion: "0.95.0"
+  welcome:
+    showOnStartup: false
+  "git-diff":
+    showIconsInEditorGutter: true
+  linter:
+    {}
+  jsformat:
+    keep_array_indentation: true
+    format_on_save: false
+    jslint_happy: true
+  "autocomplete-plus":
+    {}
+  Zen:
+    width: 120
+  "isotope-ui":
+    {}
+  "vim-mode":
+    startInInsertMode: true
+    useClipboardAsDefaultRegister: true
+  esformatter:
+    {}
+  "tool-bar":
+    position: "Left"
+    visible: false
