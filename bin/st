@@ -1,0 +1,11 @@
+#!/bin/sh
+
+openApp () {
+  exec open -a 'SourceTree' $1
+}
+
+if [ "$1" = "" ] ; then
+  openApp .
+else
+  openApp "$1"
+fi
