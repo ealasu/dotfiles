@@ -34,7 +34,7 @@
   Zen:
     width: 120
   "isotope-ui":
-    {}
+    fontFamily: "Roboto"
   "vim-mode":
     startInInsertMode: true
     useClipboardAsDefaultRegister: true
@@ -43,3 +43,17 @@
   "tool-bar":
     position: "Left"
     visible: false
+  "exception-reporting":
+    userId: "771fbd7e-00e9-4e40-1fc0-3a07e1be039a"
+  "atom-color-highlight":
+    {}
+  pigments:
+    {}
+  "xml-formatter":
+    endLineCharacter: "LF (\\n)"
+    xmlUtf8Header: false
+  "one-light-ui":
+    {}
+".source.sql":
+  editor:
+    preferredLineLength: 999
