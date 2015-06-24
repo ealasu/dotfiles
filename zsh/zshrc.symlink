@@ -1,7 +1,23 @@
+debug=
+
+function time_cmd {
+  cmd=$*
+  if test $debug; then
+    echo $cmd
+    a=$(gdate +%s%N)
+    eval $cmd
+    echo "time: $(( ($(gdate +%s%N) - $a) / 1000000 )) ms"
+  else
+    eval $cmd
+  fi
+}
+
 # shortcut to this dotfiles path is $ZSH
 export ZSH=$HOME/.dotfiles
 
-start=$(gdate +%s%N)
+if test $debug; then
+  start=$(gdate +%s%N)
+fi
 
 # your project folder that we can `c [tab]` to
 export PROJECTS=~/Code
@@ -11,37 +27,49 @@ export PROJECTS=~/Code
 # you'll have access to them in your scripts.
 if [[ -a ~/.localrc ]]
 then
-  source ~/.localrc
+  time_cmd source ~/.localrc
 fi
 
 # all of our zsh files
 typeset -U config_files
-config_files=($ZSH/**/*.zsh)
+function set_config_files {
+  if [[ -a ~/.cache/zsh/config_files ]]
+  then
+    config_files=($(cat ~/.cache/zsh/config_files))
+  else
+    config_files=($ZSH/**/*.zsh)
+    mkdir -p ~/.cache/zsh
+    echo $config_files > ~/.cache/zsh/config_files
+  fi
+}
+
+time_cmd set_config_files
 
 # load the path files
 for file in ${(M)config_files:#*/path.zsh}
 do
-  source $file
+  time_cmd source $file
 done
 
 # load everything but the path and completion files
 for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}
 do
-  source $file
+  time_cmd source $file
 done
 
 # initialize autocomplete here, otherwise functions won't be loaded
-autoload -U compinit
-compinit
+#autoload -U compinit
+#compinit
 
 # load every completion after autocomplete loads
 for file in ${(M)config_files:#*/completion.zsh}
 do
-  source $file
+  time_cmd source $file
 done
 
 unset config_files
 
-
-end=$(gdate +%s%N)
-echo "load time: $(( ($end - $start) / 1000000 )) ms"
+if test $debug; then
+  end=$(gdate +%s%N)
+  echo "load time: $(( ($end - $start) / 1000000 )) ms"
+fi
