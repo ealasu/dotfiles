@@ -1,6 +1,8 @@
 # shortcut to this dotfiles path is $ZSH
 export ZSH=$HOME/.dotfiles
 
+start=$(gdate +%s%N)
+
 # your project folder that we can `c [tab]` to
 export PROJECTS=~/Code
 
@@ -39,3 +41,7 @@ do
 done
 
 unset config_files
+
+
+end=$(gdate +%s%N)
+echo "load time: $(( ($end - $start) / 1000000 )) ms"
