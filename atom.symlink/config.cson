@@ -2,8 +2,7 @@
   editor:
     fontFamily: "Source Code Pro"
     fontSize: 12
-    invisibles:
-      {}
+    invisibles: {}
     preferredLineLength: 999
     softWrap: true
   core:
@@ -23,14 +22,12 @@
     showOnStartup: false
   "git-diff":
     showIconsInEditorGutter: true
-  linter:
-    {}
+  linter: {}
   jsformat:
     keep_array_indentation: true
     format_on_save: false
     jslint_happy: true
-  "autocomplete-plus":
-    {}
+  "autocomplete-plus": {}
   Zen:
     width: 120
   "isotope-ui":
@@ -38,22 +35,18 @@
   "vim-mode":
     startInInsertMode: true
     useClipboardAsDefaultRegister: true
-  esformatter:
-    {}
+  esformatter: {}
   "tool-bar":
     position: "Left"
     visible: false
   "exception-reporting":
     userId: "771fbd7e-00e9-4e40-1fc0-3a07e1be039a"
-  "atom-color-highlight":
-    {}
-  pigments:
-    {}
+  "atom-color-highlight": {}
+  pigments: {}
   "xml-formatter":
     endLineCharacter: "LF (\\n)"
     xmlUtf8Header: false
-  "one-light-ui":
-    {}
+  "one-light-ui": {}
 ".source.sql":
   editor:
     preferredLineLength: 999
