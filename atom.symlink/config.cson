@@ -1,20 +1,18 @@
 "*":
   editor:
-    fontFamily: "Source Code Pro"
-    fontSize: 12
     invisibles: {}
     preferredLineLength: 999
     softWrap: true
+    fontFamily: "Source Code Pro"
+    fontSize: 12
   core:
     disabledPackages: [
-      "color-picker"
-      "minimap"
       "neon-cursor"
       "autocomplete-jedi"
     ]
     themes: [
       "one-light-ui"
-      "one-light-syntax"
+      "base16-tomorrow-light-theme"
     ]
   "release-notes":
     viewedVersion: "0.95.0"
