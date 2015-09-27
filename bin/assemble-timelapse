@@ -1,29 +1,33 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env python3
 
-src="$1"
-#dst="$1.mp4"
-dst="$(basename $1).mp4"
-echo "src: $src"
-echo "dst: $dst"
-tmp='tmp'
-mkdir -p "$tmp"
-i=0
-for dir in $@ ; do
-    for file in $(find $dir -type f) ; do
-        ln -sf "$file" "$tmp/$(printf "img%04d.jpg" $i)"
-        i=$(($i + 1))
-    done
-done
+'''
+Usage:
+  assemble-timelapse <list-of-files>
+'''
 
-ffmpeg \
-    -i "$tmp/img%04d.jpg" \
-    -filter:v 'crop=5184:3225:0:0' \
-    -r 24 \
-    -vcodec libx264 \
-    -s 1620x1080 \
-    -b:v 20000k \
-    -pix_fmt yuv420p \
-    "$dst"
+import os
+from subprocess import check_call
+import tempfile
+from docopt import docopt
 
-rm -rf "$tmp"
+def assemble(input):
+	with tempfile.TemporaryDirectory() as dir:
+		with open(input, 'r') as f:
+			for i, filename in enumerate(f):
+				os.symlink(filename.strip(), os.path.join(dir, '%04d.jpg' % i))
+		check_call(['ls', '-l', dir])
+		check_call([
+			'ffmpeg',
+			'-i', os.path.join(dir, '%04d.jpg'),
+			'-r', '24',
+			'-vcodec', 'libx264',
+			'-s', '1620x1080',
+			'-b:v', '20000k',
+			'-pix_fmt', 'yuv420p',
+			input+'.mp4'
+		])
+
+
+if __name__ == '__main__':
+	args = docopt(__doc__)
+	assemble(args['<list-of-files>'])
