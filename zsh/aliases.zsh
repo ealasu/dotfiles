@@ -34,3 +34,7 @@ gcp () {
 }
 alias gs='git status'
 alias gd='git diff'
+
+alias -g ...=../..
+alias -g ....=../../..
+alias -g .....=../../../..

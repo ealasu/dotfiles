@@ -9,8 +9,6 @@ export PATH="/usr/local/heroku/bin:$PATH"
 
 ### Other env vars
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
-export EDITOR="vim"
-export VISUAL="$EDITOR"
 
 [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 

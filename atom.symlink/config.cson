@@ -4,11 +4,12 @@
     preferredLineLength: 999
     softWrap: true
     fontFamily: "Source Code Pro"
-    fontSize: 12
+    fontSize: 13
   core:
     disabledPackages: [
       "neon-cursor"
       "autocomplete-jedi"
+      "tree-view"
     ]
     themes: [
       "one-light-ui"
