@@ -1,0 +1,26 @@
+#!/bin/bash
+
+src="$1"
+dst="$1.mp4"
+echo "src: $src"
+tmp='tmp'
+mkdir -p "$tmp"
+i=0
+for dir in $@ ; do
+    for file in $dir/* ; do
+        ln -f "$file" "$tmp/$(printf "img%04d.jpg" $i)"
+        i=$(($i + 1))
+    done
+done
+
+ffmpeg \
+    -i "$tmp/img%04d.jpg" \
+    -filter:v 'crop=5184:3225:0:0' \
+    -r 24 \
+    -vcodec libx264 \
+    -s 1620x1080 \
+    -b:v 20000k \
+    -pix_fmt yuv420p \
+    "$dst"
+
+rm -rf "$tmp"
