@@ -1,14 +1,17 @@
 #!/bin/bash
+set -e
 
 src="$1"
-dst="$1.mp4"
+#dst="$1.mp4"
+dst="$(basename $1).mp4"
 echo "src: $src"
+echo "dst: $dst"
 tmp='tmp'
 mkdir -p "$tmp"
 i=0
 for dir in $@ ; do
-    for file in $dir/* ; do
-        ln -f "$file" "$tmp/$(printf "img%04d.jpg" $i)"
+    for file in $(find $dir -type f) ; do
+        ln -sf "$file" "$tmp/$(printf "img%04d.jpg" $i)"
         i=$(($i + 1))
     done
 done
