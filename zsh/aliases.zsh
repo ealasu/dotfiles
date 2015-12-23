@@ -23,7 +23,7 @@ alias p='pwd'
 #if [[ "$(uname)" == 'Darwin' ]]; then
 #  alias vi='mvim -v'
 #else
-  alias vi=nvim
+  alias vi=vim
 #fi
 
 # git

@@ -8,8 +8,10 @@ Usage:
 import os
 from itertools import groupby
 from docopt import docopt
+from pprint import pprint
 
-interval = 5.0
+interval = 500.0
+ext = 'tif'
 
 def list_dir(dir):
 	for root, dir, files in os.walk(dir):
@@ -29,14 +31,15 @@ def partition(iter, fn):
 		yield current_group
 	
 def list_timelapses(dir):
-	pics = ((os.path.getmtime(f), f) for f in list_dir(dir) if f.lower().endswith('.jpg'))
-	pics = sorted(pics)
-	groups = partition(pics, lambda a,b: b[0] - a[0] > interval)
-	groups = [[f for _, f in g] for g in groups if len(g) > 5]
-	for i, g in enumerate(groups):
-		with open(str(i), 'w') as f:
-			for x in g:
-				f.write(x + '\n')
+  pics = ((os.path.getmtime(f), f) for f in list_dir(dir) if f.lower().endswith('.' + ext))
+  pics = sorted(pics)
+  pprint(pics)
+  groups = partition(pics, lambda a,b: b[0] - a[0] > interval)
+  groups = [[f for _, f in g] for g in groups if len(g) > 5]
+  for i, g in enumerate(groups):
+  	with open(str(i), 'w') as f:
+  		for x in g:
+  			f.write(x + '\n')
 
 if __name__ == '__main__':
 	args = docopt(__doc__)

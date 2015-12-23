@@ -1,6 +1,5 @@
 " Note: Skip initialization for vim-tiny or vim-small.
 if !1 | finish | endif
-
 if has('vim_starting')
   set nocompatible               " Be iMproved
 
@@ -10,6 +9,9 @@ endif
 
 " Required:
 call neobundle#begin(expand('~/.vim/bundle/'))
+
+let mapleader = ","
+
 
 " Let NeoBundle manage NeoBundle
 " Required:
@@ -34,8 +36,7 @@ NeoBundle 'tpope/vim-sensible'
 NeoBundle 'tpope/vim-sleuth'
 NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'camelcasemotion'
-"NeoBundle 'ebfe/vim-racer'
-"NeoBundle 'scrooloose/nerdcommenter'
+NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'nvie/vim-flake8'
 NeoBundle 'majutsushi/tagbar'
@@ -45,7 +46,7 @@ NeoBundle 'bling/vim-airline'
 
 " auto-completion
 NeoBundle 'davidhalter/jedi-vim'
-"NeoBundle 'phildawes/racer'
+NeoBundle 'racer-rust/vim-racer'
 
 call neobundle#end()
 
@@ -80,10 +81,6 @@ if has("autocmd")
 endif
 
 nmap <F8> :TagbarToggle<CR>
-
-set hidden
-let g:racer_cmd = "/home/eman/workspace/github/racer/target/release/racer"
-
 noremap <F3> :Autoformat<CR><CR>
 
 " for jedi
@@ -116,3 +113,9 @@ let g:airline_powerline_fonts = 1
 "vnoremap c "_c
 "nnoremap C "_C
 "vnoremap C "_C
+
+set hidden
+let g:racer_cmd = $HOME . "/.multirust/toolchains/nightly/cargo/bin/racer"
+let $RUST_SRC_PATH = $HOME . "/.multirust/toolchains/nightly/src/src/"
+
+highlight Pmenu ctermfg=7 ctermbg=1

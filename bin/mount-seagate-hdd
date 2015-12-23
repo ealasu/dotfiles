@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+VBoxManage controlvm 'linux' poweroff || echo 'vm is off'
+
+sudo chown emi /dev/disk1
+VBoxManage startvm 'linux' --type headless
+
+sleep 1
+ssh u /home/emi/.dotfiles/bin/attach-seagate-hdd sdb
+sshfs u:/media/ ~/mnt
