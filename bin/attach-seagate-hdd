@@ -1,0 +1,128 @@
+#!/bin/bash
+#
+# This script solve the following problem:
+#
+# 1. create a GPT partition on a large disk while attached directly via SATA
+#    when the device present itself with 512 bytes of block size:
+#    sd 3:0:0:0: [sda] 5860533168 512-byte logical blocks: (3.00 TB/2.72 TiB)
+#
+# 2. try to use a SATA to USB adapter like ID 067b:2773 Prolific Technology, Inc.
+#    this present the device with 4096 bytes of block size:
+#    sd 19:0:0:0: [sdc] 732566646 4096-byte logical blocks: (3.00 TB/2.72 TiB)
+#
+# 3. The kernel is unable to read correctly the partition table with
+#    the USB adaper.
+#
+#
+# With the current tools (kernel and gdisk) in debian wheezy is
+# possible to use losetup to remap the partitions to loop devices so
+# you can use them as usual with any filesystem, raid or crypto
+#
+# I still do not know if this issue is originated by the adapter or by
+# the disk and if there are any others workarounds.
+#
+# Known version of the software:
+# $ apt-show-versions linux-image-3.2.0-4-amd64
+# linux-image-3.2.0-4-amd64/wheezy uptodate 3.2.54-2
+# $ apt-show-versions gdisk
+# gdisk/wheezy uptodate 0.8.5-1
+set -e
+
+
+attach_device() {
+    echo 'attaching'
+
+    device="$1";
+
+    MYTMPDIR=`mktemp -d`
+    trap "rm -rf $MYTMPDIR" EXIT
+
+    # gdisk on the device use the 4096 sector size
+    # but we need to force it to 512
+    # this is a knwon workaround from http://superuser.com/a/679800
+    # basically we make a copy of the gpt partition table on a file
+    dd if="/dev/$device" bs=16384 count=1 of="$MYTMPDIR/gpt" 2> /dev/null
+
+    # we extract the offset and the size of each partition
+    #
+    # FIXME: the "+ 1" seems strange, but it is needed to get the same
+    #        size value from:
+    #
+    #        blockdev --getsize64
+    #
+    #        without the "+ 1" some funny things happens, for example
+    #        you will not be able to start a recognized md device:
+    #
+    #        md: loop1 does not have a valid v1.2 superblock, not importing!
+    #        md: md_import_device returned -22
+    #
+    #        even if
+    #
+    #        mdadm --examine /dev/loop1
+    #
+    #        does not complaint
+
+    gdisk -l "$MYTMPDIR/gpt"
+
+    gdisk -l \
+     "$MYTMPDIR/gpt" 2> /dev/null | \
+     awk '/^ *[0-9]/ {printf "%.0f %.0f\n", $2 * 4096, ($3 - $2 + 1) * 4096}' > $MYTMPDIR/offset-size
+
+    # we create a loop device with the give offset and size
+    while read line
+    do
+        offset=$(printf "$line" | cut -d ' ' -f 1);
+        size=$(printf "$line" | cut -d ' ' -f 2);
+	echo "offset: $offset, size: $size"
+        losetup --verbose --offset "$offset" --sizelimit "$size" `losetup -f` /dev/$device;
+    done < $MYTMPDIR/offset-size
+
+    # mount the loop devices
+    for loopdevice in `losetup -a | grep "$device" | cut -d : -f 1`
+    do
+	udisks --mount "$loopdevice"
+    done
+}
+
+detach_device() {
+
+    device="$1"
+
+    for loopdevice in `losetup -a | grep "$device" | cut -d : -f 1`
+    do
+	udisks --unmount "$loopdevice"
+        losetup --verbose --detach "$loopdevice"
+    done
+}
+
+usage() {
+cat <<EOF
+Usage:
+- $0 -h to print this help
+- $0 sda to attach the gpt partitions of sda
+- $0 -d sda to detach the gpt partitions of sda
+EOF
+}
+
+
+detach=0;
+
+while getopts hd action
+do
+    case "$action" in
+        d) detach=1;;
+        h) usage;;
+    esac
+done
+shift $(($OPTIND-1))
+
+if [ $# -ne 1 ];
+then
+    usage;
+fi
+
+if [ "x$detach" = "x0" ]; then
+    attach_device $1;
+else
+    detach_device $1;
+fi
