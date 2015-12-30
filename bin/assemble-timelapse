@@ -1,26 +1,90 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
-src="$1"
-dst="$1.mp4"
-echo "src: $src"
-tmp='tmp'
-mkdir -p "$tmp"
-i=0
-for dir in $@ ; do
-    for file in $dir/* ; do
-        ln -f "$file" "$tmp/$(printf "img%04d.jpg" $i)"
-        i=$(($i + 1))
-    done
-done
+'''
+Usage:
+  assemble-timelapse <list-of-files>...
+'''
 
-ffmpeg \
-    -i "$tmp/img%04d.jpg" \
-    -filter:v 'crop=5184:3225:0:0' \
-    -r 24 \
-    -vcodec libx264 \
-    -s 1620x1080 \
-    -b:v 20000k \
-    -pix_fmt yuv420p \
-    "$dst"
+import os
+from subprocess import check_call
+import tempfile
+from docopt import docopt
+from pprint import pprint
 
-rm -rf "$tmp"
+STD = [
+    '-r', '30',
+    '-vcodec', 'libx264',
+    '-s', '1620x1080',
+    '-b:v', '20000k',
+    '-pix_fmt', 'yuv420p',
+    ]
+
+STD_HD = [
+    #'-vf', 'deshake=x=200:y=1310:w=1800:h=130',
+    '-r', '30',
+    '-vcodec', 'libx264',
+    '-s', '2160x1440',
+    '-b:v', '30000k',
+    '-pix_fmt', 'yuv420p',
+    ]
+
+RAW = [
+    #'-pix_fmt', 'yuv420p',
+    '-vcodec', 'libx264',
+    '-preset', 'ultrafast',
+    '-r', '60',
+    '-qp', '0',
+    '-s', '2160x1440',
+    #'-b:v', '20000k',
+    #'-pix_fmt', 'yuv420p',
+    ]
+
+STAB_A = [
+    '-pix_fmt', 'yuv420p',
+    '-vf', 'vidstabdetect',
+    ]
+
+STAB_B = [
+    '-y',
+    '-vf', 'vidstabtransform',
+    '-pix_fmt', 'yuv420p',
+    '-vcodec', 'libx264',
+    '-r', '60',
+    '-s', '2160x1440',
+    '-b:v', '20000k',
+    ]
+
+PRESET = STD_HD
+
+def assemble(inputs):
+    ext = None
+    with tempfile.TemporaryDirectory() as dir:
+        i = 0
+        for input in inputs:
+            with open(input, 'r') as f:
+                for line in f:
+                    filename = line.strip()
+                    if ext is None:
+                        ext = os.path.splitext(filename)[1].strip('.')
+                        pprint('ext: '+ext)
+                    os.symlink(filename.strip(), os.path.join(dir, '%04d.%s' % (i, ext)))
+                    i += 1
+        check_call(['ls', '-l', dir])
+
+        def call_ffmpeg(options):
+            check_call([
+                'ffmpeg',
+                '-i', os.path.join(dir, '%04d.'+ext),
+            ] + options + [
+                inputs[0]+'.mp4'
+            ])
+
+        #call_ffmpeg(STAB_A)
+        #call_ffmpeg(STAB_B)
+        #call_ffmpeg(RAW)
+        call_ffmpeg(PRESET)
+
+
+if __name__ == '__main__':
+    args = docopt(__doc__)
+    assemble(args['<list-of-files>'])
