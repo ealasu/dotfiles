@@ -1,4 +1,4 @@
-debug=
+debug=true
 
 function time_cmd {
   cmd=$*
