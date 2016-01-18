@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+/usr/local/bin/node /usr/local/bin/google-music-electron
+#/usr/local/bin/node /usr/local/lib/node_modules/google-music-electron

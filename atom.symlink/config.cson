@@ -9,7 +9,9 @@
     disabledPackages: [
       "neon-cursor"
       "autocomplete-jedi"
-      "tree-view"
+      "jshint"
+      "gulp-helper"
+      "gulp-watcher"
     ]
     themes: [
       "one-light-ui"
@@ -46,6 +48,7 @@
     endLineCharacter: "LF (\\n)"
     xmlUtf8Header: false
   "one-light-ui": {}
+  "gulp-watcher": {}
 ".source.sql":
   editor:
     preferredLineLength: 999
