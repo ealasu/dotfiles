@@ -1,11 +1,20 @@
 #!/bin/bash
 set -e
 
-VBoxManage controlvm 'linux' poweroff || echo 'vm is off'
+#VBoxManage controlvm 'linux' poweroff || echo 'vm is off'
+#sudo chown emi /dev/disk1
+#VBoxManage startvm 'linux' --type headless
+#sleep 1
 
-sudo chown emi /dev/disk1
-VBoxManage startvm 'linux' --type headless
+vm_file="$HOME/Documents/Virtual Machines.localized/minimal-debian.vmwarevm/minimal-debian.vmx"
+vm_ssh='d'
+vm_hostname='debian.local'
 
+/Applications/VMware\ Fusion.app/Contents/Library/vmrun stop "$vm_file" || echo 'vm is off'
+/Applications/VMware\ Fusion.app/Contents/Library/vmrun start "$vm_file"
+while ! ping -c1 $vm_hostname &>/dev/null; do :; done
 sleep 1
-ssh u /home/emi/.dotfiles/bin/attach-seagate-hdd sdb
-sshfs u:/media/ ~/mnt
+
+scp ~/.dotfiles/bin/attach-seagate-hdd $vm_ssh:/tmp/
+ssh $vm_ssh sudo /tmp/attach-seagate-hdd sdb
+sshfs $vm_ssh:/media/ ~/mnt
