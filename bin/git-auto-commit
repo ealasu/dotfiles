@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+fswatch -o -e '\.git' . | xargs -n1 -I{} bash -c 'git add . && git commit -avm "c" && git push'
