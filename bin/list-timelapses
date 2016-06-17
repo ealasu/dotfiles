@@ -10,8 +10,8 @@ from itertools import groupby
 from docopt import docopt
 from pprint import pprint
 
-interval = 500.0
-ext = 'tif'
+interval = 46.0
+ext = 'CR2'
 
 def list_dir(dir):
 	for root, dir, files in os.walk(dir):
@@ -31,7 +31,7 @@ def partition(iter, fn):
 		yield current_group
 	
 def list_timelapses(dir):
-  pics = ((os.path.getmtime(f), f) for f in list_dir(dir) if f.lower().endswith('.' + ext))
+  pics = ((os.path.getmtime(f), f) for f in list_dir(dir) if f.lower().endswith('.' + ext.lower()))
   pics = sorted(pics)
   pprint(pics)
   groups = partition(pics, lambda a,b: b[0] - a[0] > interval)

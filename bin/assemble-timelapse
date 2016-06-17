@@ -11,8 +11,10 @@ import tempfile
 from docopt import docopt
 from pprint import pprint
 
+FRAME_RATE = '24'
+
 STD = [
-    '-r', '30',
+    '-r', FRAME_RATE,
     '-vcodec', 'libx264',
     '-s', '1620x1080',
     '-b:v', '20000k',
@@ -21,7 +23,7 @@ STD = [
 
 STD_HD = [
     #'-vf', 'deshake=x=200:y=1310:w=1800:h=130',
-    '-r', '30',
+    '-r', FRAME_RATE,
     '-vcodec', 'libx264',
     '-s', '2160x1440',
     '-b:v', '30000k',
@@ -32,7 +34,7 @@ RAW = [
     #'-pix_fmt', 'yuv420p',
     '-vcodec', 'libx264',
     '-preset', 'ultrafast',
-    '-r', '60',
+    '-r', FRAME_RATE,
     '-qp', '0',
     '-s', '2160x1440',
     #'-b:v', '20000k',
@@ -49,7 +51,7 @@ STAB_B = [
     '-vf', 'vidstabtransform',
     '-pix_fmt', 'yuv420p',
     '-vcodec', 'libx264',
-    '-r', '60',
+    '-r', FRAME_RATE,
     '-s', '2160x1440',
     '-b:v', '20000k',
     ]
@@ -74,6 +76,7 @@ def assemble(inputs):
         def call_ffmpeg(options):
             check_call([
                 'ffmpeg',
+                '-framerate', FRAME_RATE,
                 '-i', os.path.join(dir, '%04d.'+ext),
             ] + options + [
                 inputs[0]+'.mp4'
