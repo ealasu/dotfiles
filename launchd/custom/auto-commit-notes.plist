@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>auto-commit-notes</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>bash</string>
+        <string>-c</string>
+        <string><![CDATA[ cd ~/repos/notes && PATH="/usr/local/bin:$PATH" ~/bin/git-auto-commit ]]></string>
+    </array>
+    <key>StandardOutPath</key>
+    <string>/Users/Shared/Library/Application Support/auto-commit-notes.stdout</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/Shared/Library/Application Support/auto-commit-notes.stderr</string>
+    <key>KeepAlive</key>
+    <true/>
+</dict>
+</plist>
