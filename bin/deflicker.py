@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 # RAW deflickering script
 # Copyright (2012) a1ex. License: GPL.
@@ -6,7 +6,8 @@
 from __future__ import division
 import os, sys, re, time, datetime, subprocess, shlex
 from math import *
-from pylab import *
+from statistics import median
+from scipy.signal import detrend
 
 XMP_TEMPLATE = '''<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Magic Lantern">
  <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -45,7 +46,7 @@ def progress(x, interval=1):
         _progress_interval = interval
     elif x:
         if time.time() - _progress_last_time > _progress_interval:
-            print >> sys.stderr, "%s [%d%% done, ETA %s]..." % (_progress_message, int(100*p), datetime.timedelta(seconds = round((1-p)/p*(time.time()-_progress_first_time))))
+            print("%s [%d%% done, ETA %s]..." % (_progress_message, int(100*p), datetime.timedelta(seconds = round((1-p)/p*(time.time()-_progress_first_time)))), file=sys.stderr)
             _progress_last_time = time.time()
 
 
@@ -55,7 +56,7 @@ def get_median(file):
     p1 = subprocess.Popen(shlex.split(cmd1), stdout=subprocess.PIPE)
     p2 = subprocess.Popen(shlex.split(cmd2), stdin=p1.stdout, stdout=subprocess.PIPE)
     out = p2.communicate()[0]
-    lines = out.split("\n")
+    lines = out.decode('utf8').split("\n")
     X = []
     for l in lines[1:]:
         p1 = l.find("(")
@@ -71,20 +72,21 @@ progress("Analyzing RAW exposures...");
 files = sorted((f for f in os.listdir('.') if f.endswith('.CR2')))
 i = 0;
 M = [];
-#last = 0
+last = 0
 for k,f in enumerate(files):
     #print(f)
     m = get_median(f)
     #print('  median: %s' % m)
-    #ev = log2(m)
+    ev = log2(m)
     #print('  ev: %s' % ev)
     #print('  diff from last: %s' % (ev - last))
     #last = ev
-    M.append(m)
+    M.append(ev)
 
-    E = [-log2(m/M[0]) for m in M]
-    E = detrend(array(E))
     progress(k / len(files))
+
+E = [(M[0] - m) for m in M]
+E = detrend(E, type='constant')
 
 progress("Writing XMP files...");
 i = 0;
