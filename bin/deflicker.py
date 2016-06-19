@@ -8,8 +8,7 @@ import os, sys, re, time, datetime, subprocess, shlex
 from math import *
 from pylab import *
 
-XMP_TEMPLATE = '''
-<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Magic Lantern">
+XMP_TEMPLATE = '''<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Magic Lantern">
  <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <rdf:Description rdf:about=""
     xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -26,7 +25,7 @@ XMP_TEMPLATE = '''
    </dc:subject>
   </rdf:Description>
  </rdf:RDF>
-</x:xmpmeta>;
+</x:xmpmeta>
 '''
 
 
@@ -50,18 +49,13 @@ def progress(x, interval=1):
             _progress_last_time = time.time()
 
 
-def change_ext(file, newext):
-    if newext and (not newext.startswith(".")):
-        newext = "." + newext
-    return os.path.splitext(file)[0] + newext
-
 def get_median(file):
-    cmd1 = "dcraw -c -D -4 -o 0 '%s'" % file
+    cmd1 = "dcraw -c -d -4 -o 0 '%s'" % file
     cmd2 = "convert - -type Grayscale -scale 500x500 -format %c histogram:info:-"
-    #~ print cmd1, "|", cmd2
     p1 = subprocess.Popen(shlex.split(cmd1), stdout=subprocess.PIPE)
     p2 = subprocess.Popen(shlex.split(cmd2), stdin=p1.stdout, stdout=subprocess.PIPE)
-    lines = p2.communicate()[0].split("\n")
+    out = p2.communicate()[0]
+    lines = out.split("\n")
     X = []
     for l in lines[1:]:
         p1 = l.find("(")
@@ -73,32 +67,30 @@ def get_median(file):
     m = median(X)
     return m
 
-ion()
-
 progress("Analyzing RAW exposures...");
-files = sorted(os.listdir('.'))
+files = sorted((f for f in os.listdir('.') if f.endswith('.CR2')))
 i = 0;
 M = [];
+#last = 0
 for k,f in enumerate(files):
+    #print(f)
     m = get_median(f)
-    M.append(m);
+    #print('  median: %s' % m)
+    #ev = log2(m)
+    #print('  ev: %s' % ev)
+    #print('  diff from last: %s' % (ev - last))
+    #last = ev
+    M.append(m)
 
     E = [-log2(m/M[0]) for m in M]
     E = detrend(array(E))
-    cla(); stem(range(1,len(E)+1), E);
-    xlabel('Image number')
-    ylabel('Exposure correction (EV)')
-    title(f)
-    draw();
     progress(k / len(files))
 
-progress("Developing JPG images...");
+progress("Writing XMP files...");
 i = 0;
 for k, filename in enumerate(files):
-    ec = 2 + E[k];
+    ec = E[k]
     xmp = XMP_TEMPLATE % (ec,)
-    #cmd = "ufraw-batch --out-type=jpg --overwrite --clip=film --saturation=2 --exposure=%s '%s' --output='jpg/%s'" % (ec, os.path.join("raw", f), change_ext(f, ".jpg"))
-    #os.system(cmd)
-    with open(filename + '.xmp', 'w') as f:
+    with open(os.path.splitext(filename)[0] + '.xmp', 'w') as f:
         f.write(xmp)
     progress(k / len(files))
