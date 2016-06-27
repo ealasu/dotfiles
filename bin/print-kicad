@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+resolution=600
+img="out/copper_bottom_${resolution}.png"
+pdf="out/copper_bottom_${resolution}.pdf"
+
+
+mkdir -p out
+
+gerbv \
+  --border=10 \
+  --background="#FFFFFF" \
+  --dpi=$resolution\
+  --output=$img \
+  --export=png \
+  --foreground="#000000FF" \
+  *-F.Cu.gbr
+#  -a \
+#  $GBR_OUTLINE
+#  $GBR_DRILL \
+
+#montage -density $resolution -mode concatenate -tile 1x out/copper_bottom_${resolution}.png out/copper_bottom_${resolution}.pdf
+convert $img -flip $img
+convert -density $resolution $img $pdf
