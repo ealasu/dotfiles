@@ -75,7 +75,7 @@ def get_median(file):
 if __name__ == '__main__':
     print("Analyzing RAW exposures...")
     files = sorted((f for f in os.listdir('.') if f.endswith('.CR2')))
-    with Pool(4) as pool:
+    with Pool(5) as pool:
         M = pool.map(get_median, files)
 
     E = [(M[0] - m) for m in M]

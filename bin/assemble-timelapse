@@ -25,7 +25,8 @@ STD_HD = [
     #'-vf', 'deshake=x=200:y=1310:w=1800:h=130',
     '-r', FRAME_RATE,
     '-vcodec', 'libx264',
-    '-s', '2160x1440',
+    #'-s', '2160x1440',
+    '-s', '2434x1440',
     '-b:v', '30000k',
     '-pix_fmt', 'yuv420p',
     ]
@@ -82,9 +83,6 @@ def assemble(inputs):
                 inputs[0]+'.mp4'
             ])
 
-        #call_ffmpeg(STAB_A)
-        #call_ffmpeg(STAB_B)
-        #call_ffmpeg(RAW)
         call_ffmpeg(PRESET)
 
 

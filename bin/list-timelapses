@@ -11,7 +11,7 @@ from docopt import docopt
 from pprint import pprint
 
 interval = 46.0
-ext = 'CR2'
+ext = 'tif'
 
 def list_dir(dir):
 	for root, dir, files in os.walk(dir):
