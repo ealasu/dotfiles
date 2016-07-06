@@ -1,4 +1,4 @@
-debug=true
+debug=
 
 function time_cmd {
   cmd=$*
@@ -73,3 +73,9 @@ if test $debug; then
   end=$(gdate +%s%N)
   echo "load time: $(( ($end - $start) / 1000000 )) ms"
 fi
+
+PATH="/Users/emi/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/Users/emi/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/Users/emi/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/Users/emi/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/emi/perl5"; export PERL_MM_OPT;

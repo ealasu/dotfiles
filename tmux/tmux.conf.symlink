@@ -9,9 +9,7 @@ unbind C-b
 set -g prefix C-a
 
 # mouse
-setw -g mode-mouse on
-set -g mouse-select-pane on
-setw -g mouse-select-window on
+set -g mouse on
 
 # act like vim
 setw -g mode-keys vi
