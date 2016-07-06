@@ -27,6 +27,8 @@ NeoBundle 'ealasu/vim-coffee-script'
 NeoBundle 'fatih/vim-go'
 NeoBundle 'cespare/vim-toml'
 NeoBundle 'digitaltoad/vim-jade'
+"NeoBundle 'gabrielelana/vim-markdown'
+NeoBundle 'udalov/kotlin-vim'
 
 " other plugins
 "NeoBundle 'tpope/vim-commentary'
@@ -43,10 +45,11 @@ NeoBundle 'majutsushi/tagbar'
 NeoBundle 'Chiel92/vim-autoformat'
 "NeoBundle 'mmai/vim-zenmode'
 NeoBundle 'bling/vim-airline'
+NeoBundle 'dhruvasagar/vim-table-mode'
 
 " auto-completion
 NeoBundle 'davidhalter/jedi-vim'
-NeoBundle 'racer-rust/vim-racer'
+"NeoBundle 'racer-rust/vim-racer'
 
 call neobundle#end()
 
@@ -84,18 +87,18 @@ nmap <F8> :TagbarToggle<CR>
 noremap <F3> :Autoformat<CR><CR>
 
 " for jedi
-if has('python')
-py << EOF
-import os.path
-import sys
-import vim
-if 'VIRTUAL_ENV' in os.environ:
-    project_base_dir = os.environ['VIRTUAL_ENV']
-    sys.path.insert(0, project_base_dir)
-    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-    execfile(activate_this, dict(__file__=activate_this))
-EOF
-endif
+"if has('python')
+"py << EOF
+"import os.path
+"import sys
+"import vim
+"if 'VIRTUAL_ENV' in os.environ:
+"    project_base_dir = os.environ['VIRTUAL_ENV']
+"    sys.path.insert(0, project_base_dir)
+"    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+"    execfile(activate_this, dict(__file__=activate_this))
+"EOF
+"endif
 
 let g:airline_powerline_fonts = 1
 
@@ -119,3 +122,5 @@ let g:racer_cmd = $HOME . "/.multirust/toolchains/nightly/cargo/bin/racer"
 let $RUST_SRC_PATH = $HOME . "/.multirust/toolchains/nightly/src/src/"
 
 highlight Pmenu ctermfg=7 ctermbg=1
+
+set clipboard=unnamed
