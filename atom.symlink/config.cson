@@ -10,6 +10,8 @@
       "jshint"
       "gulp-helper"
       "gulp-watcher"
+      "nuclide-file-tree"
+      "racer"
     ]
     themes: [
       "one-light-ui"
