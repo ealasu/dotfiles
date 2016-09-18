@@ -1,0 +1,6 @@
+#!/bin/bash
+
+PROG=$1
+LOADADDR=0
+
+ruby $HOME/repos/github/mchck/programmer/flash.rb name=mchck:dev=/dev/tty.uart-C4FF512FD587203A ${PROG}.bin ${LOADADDR}
