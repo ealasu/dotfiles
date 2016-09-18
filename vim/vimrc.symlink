@@ -23,10 +23,10 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 " syntaxes
 NeoBundle 'wting/rust.vim'
-NeoBundle 'ealasu/vim-coffee-script'
-NeoBundle 'fatih/vim-go'
+"NeoBundle 'ealasu/vim-coffee-script'
+"NeoBundle 'fatih/vim-go'
 NeoBundle 'cespare/vim-toml'
-NeoBundle 'digitaltoad/vim-jade'
+"NeoBundle 'digitaltoad/vim-jade'
 "NeoBundle 'gabrielelana/vim-markdown'
 NeoBundle 'udalov/kotlin-vim'
 
@@ -123,4 +123,4 @@ let $RUST_SRC_PATH = $HOME . "/.multirust/toolchains/nightly/src/src/"
 
 highlight Pmenu ctermfg=7 ctermbg=1
 
-set clipboard=unnamed
+"set clipboard=unnamed
