@@ -2,7 +2,7 @@
 
 '''
 Usage:
-  list-timelapses <dir>
+  list-timelapses <dir> [--interval=<seconds>]
 '''
 
 import os
@@ -10,7 +10,6 @@ from itertools import groupby
 from docopt import docopt
 from pprint import pprint
 
-interval = 46.0
 ext = 'tif'
 
 def list_dir(dir):
@@ -30,7 +29,7 @@ def partition(iter, fn):
 	if len(current_group) > 0:
 		yield current_group
 	
-def list_timelapses(dir):
+def list_timelapses(dir, interval):
   pics = ((os.path.getmtime(f), f) for f in list_dir(dir) if f.lower().endswith('.' + ext.lower()))
   pics = sorted(pics)
   pprint(pics)
@@ -43,4 +42,10 @@ def list_timelapses(dir):
 
 if __name__ == '__main__':
 	args = docopt(__doc__)
-	list_timelapses(os.path.abspath(args['<dir>']))
+
+	if args['--interval'] is None:
+	  interval = 2.0
+	else:
+	  interval = float(args['--interval'])
+
+	list_timelapses(os.path.abspath(args['<dir>']), interval=interval)

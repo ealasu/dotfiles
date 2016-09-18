@@ -10,11 +10,16 @@ vm_file="$HOME/Documents/Virtual Machines.localized/minimal-debian.vmwarevm/mini
 vm_ssh='d'
 vm_hostname='debian.local'
 
-/Applications/VMware\ Fusion.app/Contents/Library/vmrun stop "$vm_file" || echo 'vm is off'
-/Applications/VMware\ Fusion.app/Contents/Library/vmrun start "$vm_file"
-while ! ping -c1 $vm_hostname &>/dev/null; do :; done
+#/Applications/VMware\ Fusion.app/Contents/Library/vmrun stop "$vm_file" || echo 'vm is off'
+/Applications/VMware\ Fusion.app/Contents/Library/vmrun start "$vm_file" || echo 'could not start vm'
+while ! ping -c1 $vm_hostname &>/dev/null
+do
+  sleep 1
+done
 sleep 1
 
-scp ~/.dotfiles/bin/attach-seagate-hdd $vm_ssh:/tmp/
-ssh $vm_ssh sudo /tmp/attach-seagate-hdd sda
-sshfs $vm_ssh:/media/backup4 ~/mnt
+#scp ~/.dotfiles/bin/attach-seagate-hdd $vm_ssh:/tmp/
+#ssh $vm_ssh sudo /tmp/attach-seagate-hdd sda
+ssh $vm_ssh sudo /home/emi/attach-seagate-hdd sdb
+#sshfs $vm_ssh:/media/disk ~/mnt
+sudo mount-nfs

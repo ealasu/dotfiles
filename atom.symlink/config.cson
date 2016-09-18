@@ -1,10 +1,8 @@
 "*":
-  editor:
-    invisibles: {}
-    preferredLineLength: 999
-    softWrap: true
-    fontFamily: "Source Code Pro"
-    fontSize: 13
+  Zen:
+    width: 120
+  "atom-color-highlight": {}
+  "autocomplete-plus": {}
   core:
     disabledPackages: [
       "neon-cursor"
@@ -17,38 +15,40 @@
       "one-light-ui"
       "base16-tomorrow-light-theme"
     ]
-  "release-notes":
-    viewedVersion: "0.95.0"
-  welcome:
-    showOnStartup: false
+  editor:
+    fontFamily: "Source Code Pro"
+    fontSize: 13
+    invisibles: {}
+    preferredLineLength: 999
+    softWrap: true
+  esformatter: {}
+  "exception-reporting":
+    userId: "771fbd7e-00e9-4e40-1fc0-3a07e1be039a"
   "git-diff":
     showIconsInEditorGutter: true
-  linter: {}
-  jsformat:
-    keep_array_indentation: true
-    format_on_save: false
-    jslint_happy: true
-  "autocomplete-plus": {}
-  Zen:
-    width: 120
+  "gulp-watcher": {}
   "isotope-ui":
     fontFamily: "Roboto"
-  "vim-mode":
-    startInInsertMode: true
-    useClipboardAsDefaultRegister: true
-  esformatter: {}
+  jsformat:
+    format_on_save: false
+    jslint_happy: true
+    keep_array_indentation: true
+  linter: {}
+  "one-light-ui": {}
+  pigments: {}
+  "release-notes":
+    viewedVersion: "0.95.0"
   "tool-bar":
     position: "Left"
     visible: false
-  "exception-reporting":
-    userId: "771fbd7e-00e9-4e40-1fc0-3a07e1be039a"
-  "atom-color-highlight": {}
-  pigments: {}
+  "vim-mode":
+    startInInsertMode: true
+    useClipboardAsDefaultRegister: true
+  welcome:
+    showOnStartup: false
   "xml-formatter":
     endLineCharacter: "LF (\\n)"
     xmlUtf8Header: false
-  "one-light-ui": {}
-  "gulp-watcher": {}
 ".source.sql":
   editor:
     preferredLineLength: 999
