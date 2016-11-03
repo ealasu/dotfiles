@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -e
+
+container="$1"
+file="$2"
+
+external_file="conf/$container/$file"
+external_dir="conf/$container/$(dirname "$file")"
+
+mkdir -p "$external_dir"
+docker cp "$container:$file" "$external_file"
+
+echo 'add this volume to your docker-compose.yml:'
+echo "    - './$external_file:$file'"
