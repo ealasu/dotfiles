@@ -70,7 +70,7 @@ set shiftwidth=2
 set autoindent
 set cindent
 set mouse=a
-"set clipboard=unnamed
+set clipboard=unnamed
 set clipboard+=unnamedplus
 
 function! TrimWhiteSpace()

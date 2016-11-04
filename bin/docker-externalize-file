@@ -2,10 +2,11 @@
 set -e
 
 container="$1"
-file="$2"
+container_label="$2"
+file="$3"
 
-external_file="conf/$container/$file"
-external_dir="conf/$container/$(dirname "$file")"
+external_file="conf/$container_label/$file"
+external_dir="conf/$container_label/$(dirname "$file")"
 
 mkdir -p "$external_dir"
 docker cp "$container:$file" "$external_file"
