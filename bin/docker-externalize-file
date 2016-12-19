@@ -1,15 +1,45 @@
-#!/usr/bin/env bash
-set -e
+#!/usr/bin/env python3
+"""
+Usage:
+  docker-externalize-file <container> <file_path>
+"""
 
-container="$1"
-container_label="$2"
-file="$3"
+import os
+from subprocess import run, PIPE
+from docopt import docopt
+import ruamel.yaml
 
-external_file="conf/$container_label/$file"
-external_dir="conf/$container_label/$(dirname "$file")"
 
-mkdir -p "$external_dir"
-docker cp "$container:$file" "$external_file"
+def main(args):
+  container = args['<container>'].strip()
+  assert container
+  container_id = run(['docker-compose', 'ps', '-q', container],
+      check=True, stdout=PIPE).stdout.decode('utf8').strip()
+  assert container_id
+  file_path = args['<file_path>'].strip()
+  assert file_path
+  assert file_path.startswith('/')
 
-echo 'add this volume to your docker-compose.yml:'
-echo "    - './$external_file:$file'"
+  conf_dir = './conf'
+  external_file = conf_dir +'/'+ container + file_path
+  external_dir = conf_dir +'/'+ container + os.path.dirname(file_path)
+
+  os.makedirs(external_dir, exist_ok=True)
+  run(['docker', 'cp', '{}:{}'.format(container_id, file_path), external_file], check=True)
+
+  compose_file_path = './docker-compose.yml'
+  with open(compose_file_path, 'r') as f:
+    y = ruamel.yaml.load(f, ruamel.yaml.RoundTripLoader)
+
+  container_node = y[container]
+  if 'volumes' not in container_node:
+    container_node['volumes'] = []
+  container_node['volumes'].append('{}:{}'.format(external_file, file_path))
+
+  with open(compose_file_path, 'w') as f:
+    ruamel.yaml.dump(y, f, Dumper=ruamel.yaml.RoundTripDumper, width=9999)
+
+
+if __name__ == '__main__':
+    arguments = docopt(__doc__)
+    main(arguments)
