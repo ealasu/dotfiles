@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+jar=${1}
+
+unzip -p ${jar} META-INF/MANIFEST.MF

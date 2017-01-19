@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+
+import sys
+import os.path
+from subprocess import run, PIPE, CalledProcessError
+from tempfile import NamedTemporaryFile
+import yaml
+
+
+# # How this works:
+# read docker-compose.yml
+# for each service:
+#   spin up a fresh docker container
+#   for each volume:
+#     copy files out of docker container to /tmp
+#     diff copied files against external files
+#     delete copied files
+#   delete container
+
+def main():
+  with open('docker-compose.yml', 'r') as f:
+    compose = yaml.load(f.read())
+  for service_id, service in compose.items():
+    print('service: ' + service_id)
+    image = service['image']
+    container = run(['docker', 'create', image], check=True, stdout=PIPE).stdout.decode('utf8').strip()
+    print('created container ' + container)
+    run(['docker', 'start', container], check=True)
+    print('started container')
+
+    if 'volumes' in service:
+      for v in service['volumes']:
+        external_name, internal_name = v.split(':')
+        if external_name.startswith('./logs/'):
+          continue
+        print('volume: ' + internal_name)
+        with NamedTemporaryFile() as tmpfile:
+          res = run(['docker', 'cp', container + ':' + internal_name, tmpfile.name], stderr=PIPE)
+          try:
+            res.check_returncode()
+          except CalledProcessError:
+            if ': no such file or directory' in res.stderr.decode('utf8'):
+              pass
+            elif 'cannot copy directory' in res.stderr.decode('utf8'):
+              continue
+            else:
+              sys.stderr.buffer.write(res.stderr)
+              raise
+          diff(tmpfile.name, external_name,
+              os.path.join('./diff', external_name))
+
+    print('stopping container')
+    run(['docker', 'stop', container], check=True)
+    print('removing container')
+    run(['docker', 'rm', container], check=True)
+
+
+def diff(original, modified, output):
+  print('diffing ' + original + ' and ' + modified + ' to ' + output)
+  run(['mkdir', '-p', os.path.dirname(output)], check=True)
+  res = run(['diff', '-u', original, modified], stdout=PIPE)
+  if res.stdout.decode('utf8').startswith('Binary files'):
+    with open(modified, 'rb') as f:
+      diff_output = f.read()
+  else:
+    diff_output = res.stdout
+  with open(output, 'wb') as f:
+    f.write(diff_output)
+
+
+if __name__ == '__main__':
+  main()
