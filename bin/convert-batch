@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+#src="$1"
+
+#find "$src" -type f -iname '*.CR2' -print0 | gsort -V | xargs -0 -n 1 -P 5 -I {}  convert -verbose -units PixelsPerInch {} -colorspace sRGB -set filename:new '%t' -density 72 -format JPG -quality 90 'out/%[filename:new].jpg'
+
+#find . -type f -iname '*.CR2' -print0 | gsort -V | xargs -0 -n 1 -P 5 -I {} bash -c 'set -e; f={}; convert -verbose -units PixelsPerInch $f -colorspace sRGB -density 72 -format JPG -quality 90 "$f.jpg" && exiftool -overwrite_original_in_place -tagsFromFile $f $f.jpg'
+
+#find . -type f -iname '*.CR2' -print0 | gsort -V | xargs -0 -n 1 -P 5 -I {} bash -c 'set -e; f={}; d=$(exiftool -s3 -CreateDate $f | sed "s/ /_/g" | sed "s/:/-/g").jpg; convert -verbose -units PixelsPerInch $f -colorspace sRGB -density 72 -format JPG -quality 90 $d && exiftool -overwrite_original_in_place -tagsFromFile $f $d'
+
+# extract previews
+#find . -type f -iname '*.CR2' -print0 | gsort -V | xargs -0 -n 1 -P 5 -I {} bash -c 'set -e; f={} ; echo $f; d=$(exiftool -s3 -CreateDate $f | sed "s/ /_/g" | sed "s/:/-/g").jpg ; exiftool -PreviewImage -b $f > $d'
+find . -type f -iname '*.CR2' -print0 | gsort -V | xargs -0 -n 1 -P 5 -I {} bash -c 'set -e; f={} ; echo $f; d=$f.jpg ; exiftool -PreviewImage -b $f > $d'
+
+#find . -type f -iname '*.CR2' -print0 | gsort -V | xargs -0 -n 1 -P 5 -I {} bash -c 'set -e; f={}; d=$(exiftool -s3 -CreateDate $f | sed "s/ /_/g" | sed "s/:/-/g").tif; convert -verbose -units PixelsPerInch $f -colorspace sRGB -density 72 -depth 16 $d'
+
+
+#find "$src" -type f -iname '*.CR2' -print0 | gsort -V | xargs -0 -n 1 -P 5 -I {} convert -verbose {} -set filename:new '%t' -format TIF -depth 16 '%[filename:new].tif'

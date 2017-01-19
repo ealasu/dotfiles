@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 
-'''
+'''list-timelapses
+
 Usage:
-  list-timelapses <dir> [--interval=<seconds>]
+  list-timelapses <dir> [-i <interval>] [-e <extension>] [--nogroup]
+
+Options:
+  -i <interval>	  Interval in seconds
+  -e <extension>  Filename extension to look for
 '''
 
 import os
@@ -10,7 +15,6 @@ from itertools import groupby
 from docopt import docopt
 from pprint import pprint
 
-ext = 'tif'
 
 def list_dir(dir):
 	for root, dir, files in os.walk(dir):
@@ -29,7 +33,7 @@ def partition(iter, fn):
 	if len(current_group) > 0:
 		yield current_group
 	
-def list_timelapses(dir, interval):
+def list_timelapses(dir, interval, ext, nogroup):
   pics = ((os.path.getmtime(f), f) for f in list_dir(dir) if f.lower().endswith('.' + ext.lower()))
   pics = sorted(pics)
   pprint(pics)
@@ -42,10 +46,16 @@ def list_timelapses(dir, interval):
 
 if __name__ == '__main__':
 	args = docopt(__doc__)
+	print(args)
 
-	if args['--interval'] is None:
+	interval = args['-i']
+	if interval is None:
 	  interval = 2.0
 	else:
-	  interval = float(args['--interval'])
+	  interval = float(interval)
 
-	list_timelapses(os.path.abspath(args['<dir>']), interval=interval)
+	ext = args['-e']
+	if ext is None:
+	  ext = 'jpg'
+
+	list_timelapses(os.path.abspath(args['<dir>']), interval=interval, ext=ext, nogroup=args['--nogroup'])

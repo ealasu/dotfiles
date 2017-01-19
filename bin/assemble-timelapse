@@ -11,7 +11,7 @@ import tempfile
 from docopt import docopt
 from pprint import pprint
 
-FRAME_RATE = '24'
+FRAME_RATE = '8'
 
 STD = [
     '-r', FRAME_RATE,
@@ -23,13 +23,20 @@ STD = [
 
 STD_HD = [
     #'-vf', 'deshake=x=200:y=1310:w=1800:h=130',
+    # '-vf', 'scale=1920:1080,format=yuv420p',
+    # '-filter:v', 'crop=900:900, scale=2048:1536,format=yuv420p',
+    # '-filter:v', 'scale=2048:1536, format=yuv420p',
+    # '-filter:v', 'scale=900:900, format=yuv420p',
+    # '-s', '2048x1536',
     '-r', FRAME_RATE,
     '-vcodec', 'libx264',
-    '-s', '2372x1440',
+    # '-s', '2372x1440',
     #'-s', '2160x1440',
     #'-s', '2388x1440',
-    '-b:v', '30000k',
+    # '-b:v', '30000k',
+    '-b:v', '16000k',
     '-pix_fmt', 'yuv420p',
+    '-profile:v', 'high', '-level', '4.2',
     ]
 
 RAW = [
@@ -71,9 +78,9 @@ def assemble(inputs):
                     if ext is None:
                         ext = os.path.splitext(filename)[1].strip('.')
                         pprint('ext: '+ext)
-                    os.symlink(filename.strip(), os.path.join(dir, '%04d.%s' % (i, ext)))
+                    os.symlink(os.path.abspath(filename.strip()), os.path.join(dir, '%04d.%s' % (i, ext)))
                     i += 1
-        check_call(['ls', '-l', dir])
+        # check_call(['ls', '-l', dir])
 
         def call_ffmpeg(options):
             check_call([
