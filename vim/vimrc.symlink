@@ -31,6 +31,7 @@ NeoBundle 'cespare/vim-toml'
 NeoBundle 'udalov/kotlin-vim'
 NeoBundle 'vim-scripts/groovy.vim'
 NeoBundle 'tfnico/vim-gradle'
+NeoBundle 'ElmCast/elm-vim'
 
 " other plugins
 "NeoBundle 'tpope/vim-commentary'
@@ -51,7 +52,7 @@ NeoBundle 'dhruvasagar/vim-table-mode'
 
 " auto-completion
 NeoBundle 'davidhalter/jedi-vim'
-"NeoBundle 'racer-rust/vim-racer'
+NeoBundle 'racer-rust/vim-racer'
 
 call neobundle#end()
 
@@ -120,8 +121,8 @@ let g:airline_powerline_fonts = 1
 "vnoremap C "_C
 
 set hidden
-let g:racer_cmd = $HOME . "/.multirust/toolchains/nightly/cargo/bin/racer"
-let $RUST_SRC_PATH = $HOME . "/.multirust/toolchains/nightly/src/src/"
+let g:racer_cmd = $HOME . "/.cargo/bin/racer"
+"let $RUST_SRC_PATH = $HOME . "/.multirust/toolchains/nightly/src/src/"
 
 highlight Pmenu ctermfg=7 ctermbg=1
 
