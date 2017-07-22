@@ -32,6 +32,7 @@ NeoBundle 'udalov/kotlin-vim'
 NeoBundle 'vim-scripts/groovy.vim'
 NeoBundle 'tfnico/vim-gradle'
 NeoBundle 'ElmCast/elm-vim'
+NeoBundle 'sirtaj/vim-openscad'
 
 " other plugins
 "NeoBundle 'tpope/vim-commentary'
