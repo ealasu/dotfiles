@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
 	interval = args['-i']
 	if interval is None:
-	  interval = 2.0
+	  interval = 5.0
 	else:
 	  interval = float(interval)
 

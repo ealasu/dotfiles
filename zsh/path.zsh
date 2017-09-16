@@ -12,8 +12,8 @@ export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
 
 [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 
-export NVM_DIR="$HOME/.nvm"
-source $(brew --prefix nvm)/nvm.sh
+#export NVM_DIR="$HOME/.nvm"
+#source $(brew --prefix nvm)/nvm.sh
 
 # added by Anaconda3 2.4.1 installer
 export PATH="$HOME/anaconda3/bin:$PATH"

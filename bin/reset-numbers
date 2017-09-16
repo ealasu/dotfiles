@@ -7,10 +7,10 @@ mkdir $dest
 
 a='printf "mv \"%s\" '
 b=$dest
-c='/IMG_%04d.CR2\n", $0, a++'
+c='/IMG_%04d.tif\n", $0, a++'
 cmd="BEGIN{ a=$start }{ $a$b$c  }"
 
-find . -type f -name '*.CR2' \
+find . -type f -name '*.tif' \
        | python -c 'import os, sys; times = {}
 for f in sys.stdin.readlines(): f = f[0:-1]; times[f] = os.stat(f).st_mtime
 for f in sorted(times.iterkeys(), key=lambda f:times[f], reverse=False): print f' \

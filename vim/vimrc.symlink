@@ -37,7 +37,7 @@ NeoBundle 'sirtaj/vim-openscad'
 " other plugins
 "NeoBundle 'tpope/vim-commentary'
 NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'kana/vim-fakeclip'
+"NeoBundle 'kana/vim-fakeclip'
 NeoBundle 'tpope/vim-sensible'
 NeoBundle 'tpope/vim-sleuth'
 NeoBundle 'tpope/vim-dispatch'
@@ -74,8 +74,8 @@ set shiftwidth=2
 set autoindent
 set cindent
 set mouse=a
-set clipboard=unnamed
-set clipboard+=unnamedplus
+set clipboard^=unnamed
+"set clipboard+=unnamedplus
 
 function! TrimWhiteSpace()
   %s/\s\+$//e

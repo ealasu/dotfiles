@@ -11,7 +11,7 @@ import tempfile
 from docopt import docopt
 from pprint import pprint
 
-FRAME_RATE = '8'
+FRAME_RATE = '24'
 
 STD = [
     '-r', FRAME_RATE,
