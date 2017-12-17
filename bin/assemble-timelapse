@@ -86,7 +86,8 @@ def assemble(inputs):
             check_call([
                 'ffmpeg',
                 '-framerate', FRAME_RATE,
-                '-i', os.path.join(dir, '%04d.'+ext),
+                # '-i', os.path.join(dir, '%04d.'+ext),
+                '-i', os.path.join(dir, 'lapse-%d.'+ext),
             ] + options + [
                 inputs[0]+'.mp4'
             ])

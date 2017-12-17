@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+input=$1
+
+ffmpeg -framerate 24 -i ${input}/lapse-%d.tif -r 24 -vcodec libx264 -b:v 16000k -pix_fmt yuv420p -profile:v high -level 4.2 ${input}.mp4

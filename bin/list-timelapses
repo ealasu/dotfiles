@@ -34,8 +34,8 @@ def partition(iter, fn):
 		yield current_group
 	
 def list_timelapses(dir, interval, ext, nogroup):
-  pics = ((os.path.getmtime(f), f) for f in list_dir(dir) if f.lower().endswith('.' + ext.lower()))
-  pics = sorted(pics)
+  pics = ((os.path.getmtime(f), f) for f in sorted(list_dir(dir)) if f.lower().endswith('.' + ext.lower()))
+  # pics = sorted(pics)
   pprint(pics)
   groups = partition(pics, lambda a,b: b[0] - a[0] > interval)
   groups = [[f for _, f in g] for g in groups if len(g) > 5]
