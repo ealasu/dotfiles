@@ -37,7 +37,7 @@ function set_config_files {
   then
     config_files=($(cat ~/.cache/zsh/config_files))
   else
-    config_files=($ZSH/**/*.zsh)
+    config_files=($ZSH/*/*.zsh)
     mkdir -p ~/.cache/zsh
     echo $config_files > ~/.cache/zsh/config_files
   fi

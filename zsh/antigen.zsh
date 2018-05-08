@@ -1,5 +1,9 @@
-source $ZSH/zsh/antigen/antigen.zsh
+export ZPLUG_HOME=$ZSH/zsh/zplug
+source $ZPLUG_HOME/init.zsh
 
-antigen bundle sindresorhus/pure
-antigen bundle zsh-users/zsh-history-substring-search
-antigen bundle zsh-users/zsh-syntax-highlighting
+zplug mafredri/zsh-async, from:github
+zplug sindresorhus/pure, use:pure.zsh, from:github, as:theme
+zplug zsh-users/zsh-history-substring-search
+zplug zsh-users/zsh-syntax-highlighting
+
+zplug load
