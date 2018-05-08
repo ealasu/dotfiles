@@ -12,7 +12,9 @@
       "gulp-watcher"
       "nuclide-file-tree"
       "racer"
+      "atom-beautify"
     ]
+    telemetryConsent: "no"
     themes: [
       "one-light-ui"
       "base16-tomorrow-light-theme"

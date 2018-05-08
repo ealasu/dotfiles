@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+jar=${1}
+file=${2}
+
+unzip -p ${jar} ${file}
