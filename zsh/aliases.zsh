@@ -20,11 +20,11 @@ alias l='ls -CF'
 alias p='pwd'
 
 # vi
-if [[ "$(uname)" == 'Darwin' ]]; then
-  alias vi='reattach-to-user-namespace mvim -v'
-else
+#if [[ "$(uname)" == 'Darwin' ]]; then
+  #alias vi='reattach-to-user-namespace mvim -v'
+#else
   alias vi=vim
-fi
+#fi
 
 # git
 alias gca='git commit -a -m'
