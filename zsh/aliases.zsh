@@ -29,7 +29,6 @@ fi
 # git
 alias gca='git commit -a -m'
 alias gcam='git commit -a --amend'
-alias gp='git push'
 gcp () {
     git commit -a -m "$1" && git push
 }
